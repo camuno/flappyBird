@@ -28,7 +28,7 @@ int main(void) {
 		//Main game loop
 		BeginDrawing();
 
-		ClearBackground(BLACK);
+		ClearBackground(WHITE);
 
 		DrawTextureEx(background, (Vector2){0, 0}, 0, 2, RAYWHITE);
 
