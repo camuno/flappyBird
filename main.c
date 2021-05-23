@@ -19,6 +19,8 @@ int main(void) {
 	Sound hitSound = LoadSound("src/assets/hit.wav");
 	Sound pointSound = LoadSound("src/assets/point.wav");
 	Sound swooshSound = LoadSound("src/assets/swoosh.wav");
+	Sound button1Sound = LoadSound("src/assets/button-1.mp3");
+	Sound button2Sound = LoadSound("src/assets/button-2.mp3");
 
 	// Initialiazing images
 	// Numbers images
@@ -65,10 +67,19 @@ int main(void) {
 
 	// Declaring variable
 	bool isInMenu = false;
+	// Mouse info
+	Vector2 mousePoint = { 0.0f, 0.0f };
+	// Button info
+	int buttonState = 0;
+	bool buttonAction = false;
+
 
 	//Main game loop
 	while (!WindowShouldClose())
 	{
+		// Get the position of the mouse
+		mousePoint = GetMousePosition();
+
 		if (IsKeyPressed(KEY_SPACE)) {
 			if (isInMenu) {
 				StopMusicStream(menuMusic);
@@ -90,12 +101,35 @@ int main(void) {
 
 		// Showing the menu or the game
 		if (isInMenu) {
+			// Updating menu background music
 			UpdateMusicStream(menuMusic);
+
+			// Changing backgound color
 			ClearBackground(BLACK);
-			DrawRectangle(0, 0, 100, 30, RED);
+
+			Rectangle buttonMenu1 = { 0, 0, 100, 30 };
+
+			if (CheckCollisionPointRec(mousePoint, buttonMenu1)) {
+				if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+					DrawRectangle(buttonMenu1.x, buttonMenu1.y, buttonMenu1.width, buttonMenu1.height, MAROON);
+				}
+				else {
+					DrawRectangle(buttonMenu1.x, buttonMenu1.y, buttonMenu1.width, buttonMenu1.height, BROWN);
+				}
+
+				if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+					PlaySound(button1Sound);
+				}
+			}
+			else {
+				DrawRectangle(buttonMenu1.x, buttonMenu1.y, buttonMenu1.width, buttonMenu1.height, RED);
+			}
 		}
 		else {
+			// Updating game background music
 			UpdateMusicStream(darksouls);
+
+			// Drawing the background of the game
 			DrawTextureEx(background, (Vector2) { 0, 0 }, 0, 2, RAYWHITE);
 		}
 
